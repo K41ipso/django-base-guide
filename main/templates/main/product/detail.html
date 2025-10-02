@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+        {% else %}
+            <img src="https://via.placeholder.com/600x400" class="img-fluid" alt="Нет изображения">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1>{{ product.name }}</h1>
+        <p class="lead">{{ product.price }} руб.</p>
+        <p>{{ product.description }}</p>
+        <a href="#" class="btn btn-success">Добавить в корзину</a>
+    </div>
+</div>
+
+<div class="mt-4">
+    <h3>Похожие товары</h3>
+    <div class="row">
+        {% for related in related_products %}
+            <div class="col-md-3">
+                <div class="card">
+                    {% if related.image %}
+                        <img src="{{ related.image.url }}" class="card-img-top" alt="{{ related.name }}" style="height: 150px; object-fit: cover;">
+                    {% else %}
+                        <img src="https://via.placeholder.com/200x150" class="card-img-top" alt="Нет изображения">
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ related.name }}</h6>
+                        <p class="card-text">{{ related.price }} руб.</p>
+                        <a href="{% url 'main:product_detail' related.id related.slug %}" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Похожих товаров нет.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
